@@ -3,19 +3,19 @@ install.packages("rgdal")
 library(rgdal)
 library(tidyverse)
 
-zilla=readOGR("C:/Users/shoeb/Desktop/Corona/District",layer = "gadm36_BGD_2")
+zilla=readOGR("_FILE_LOCATION",layer = "SHAPE_FILE_NAME") [ you have to add file location and shape file name ] 
 
-plot(zilla,col="green")
+plot(zilla,col="green") [ here i take only zilla which means distric of bangladesh ] 
 
-View(zilla_gg)
+View(zilla_gg) [ see the first view of your map ]
 
-zilla_gg<- fortify(zilla)
+zilla_gg<- fortify(zilla) [ For maintaining sequence ] 
 
 
-corona_bd <- read_csv("corona.csv")
-zilla_gg <- zilla_gg %>% mutate(id = as.numeric(id))
+corona_bd <- read_csv("test.csv") [ Import coma separeted values or csv file name  ] 
+zilla_gg <- zilla_gg %>% mutate(id = as.numeric(id)) [ this two line for my id which is character and i convert it to numeric ] 
 zilla_gg <-  zilla_gg %>% left_join(corona_bd, by = "id")
 
-ggplot(zilla_gg) + aes(long, lat, group=group, fill = corona)+geom_polygon() +geom_path(color= "white")+
+ggplot(zilla_gg) + aes(long, lat, group=group, fill = corona)+geom_polygon() +geom_path(color= "white")+ 
 coord_equal() +   scale_fill_gradient("Corona Confirmed Cases_By_OUKS",low = "#ff8080", high = "red",space = "Lab",
-na.value = "green",guide = "colorbar",aesthetics = "fill" )
+na.value = "green",guide = "colorbar",aesthetics = "fill" ) [ for color ] 
