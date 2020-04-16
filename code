@@ -1,0 +1,21 @@
+install.packages("rgdal")
+
+library(rgdal)
+library(tidyverse)
+
+zilla=readOGR("C:/Users/shoeb/Desktop/Corona/District",layer = "gadm36_BGD_2")
+
+plot(zilla,col="green")
+
+View(zilla_gg)
+
+zilla_gg<- fortify(zilla)
+
+
+corona_bd <- read_csv("corona.csv")
+zilla_gg <- zilla_gg %>% mutate(id = as.numeric(id))
+zilla_gg <-  zilla_gg %>% left_join(corona_bd, by = "id")
+
+ggplot(zilla_gg) + aes(long, lat, group=group, fill = corona)+geom_polygon() +geom_path(color= "white")+
+coord_equal() +   scale_fill_gradient("Corona Confirmed Cases_By_OUKS",low = "#ff8080", high = "red",space = "Lab",
+na.value = "green",guide = "colorbar",aesthetics = "fill" )
